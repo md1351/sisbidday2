@@ -1,0 +1,92 @@
+---
+title: "sisdidday2"
+output: html_document
+---
+
+```{r}
+library(devtools)
+install_github("jennybc/googlesheets")
+install.packages("googlesheets")
+library("googlesheets")
+?gs_read
+```
+
+reading a googlesheets
+
+```{r}
+sheets_url = "https://docs.google.com/spreadsheets/d/18KQQd4LY5k8Ucux1MvWCsQGQJlvd0ECTnn-3ixdOKFM/pubhtml"
+gsurl1 = gs_url(sheets_url)
+gsurl1
+dat = gs_read(gsurl1)
+date_accessed = date()
+date_accessed
+```
+
+look at the results
+
+Doing the lab
+```{r}
+dat2 = gs_read(sheets_url, range=cell_cols(1:2))
+```
+
+find ou how many years of R experience
+```{r}
+data = gs_read(gsurl_about)
+data
+mean(as.numeric(dat$'Years of R experience'), na.rm=T)
+logical_two_
+```
+
+
+##Doing JSON stuff
+
+install stuff
+
+```{r}
+install.packages("jsonlite")
+library(jsonlite)
+```
+
+```{r}
+github_url = "https://api.github.com/users/jtleek/repos"
+jsonData <- fromJSON(github_url)
+dim(jsonData)
+
+jsonData$name
+```
+
+explore the data 
+```{r}
+table(sapply(jsonData,class))
+head(jsonData$owner)
+jsonData$owner$html_url#data format is more free and one row variable can include more data frames
+```
+
+```{r}
+github_url = "https://api.github.com/users/handley/repos"
+data = fromJSON(github_url)
+names(data)
+data$stargazers_count
+data$open_issues
+```
+
+Safari -> preferences -> advanced -> 
+
+
+
+//*[@id="recounttab"]/table/tbody
+
+web data grasp
+rvest package
+```{r}
+recount_url = "http://bowtie-bio.sourceforge.net/recount/"
+install.packages("rvest")
+library(rvest)
+htmlfile = read_html(recount_url)#downlaod from the Internet
+nds = html_nodes(htmlfile, xpath='//*[@id="recounttab"]/table')
+dat = html_table(nds)
+dat = as.data.frame(dat)
+head(dat)
+names(dat) = dat[1,]
+dat[-1,]
+```
